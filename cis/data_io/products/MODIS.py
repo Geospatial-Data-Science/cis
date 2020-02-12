@@ -31,7 +31,7 @@ def _get_MODIS_SDS_data(sds):
 
     # Offsets and scaling.
     add_offset = attributes.get('add_offset', 0.0)
-    scale_factor = attributes.get('scale_factor', 1.0)
+    scale_factor = attributes.get('scale_factor', 1.0)       # might need to change?
     data = _apply_scaling_factor_MODIS(data, scale_factor, add_offset)
 
     return data
@@ -96,7 +96,7 @@ class MODIS_L3(AProduct):
         return parse_datetimestr_to_std_time(datetime_str)
 
     def get_file_signature(self):
-        product_names = ['MYD08_D3', 'MOD08_D3', 'MYD08_M3', 'MOD08_M3', "MOD08_E3"]
+        product_names = ['MYD08_D3', 'MOD08_D3', 'MYD08_M3', 'MOD08_M3', "MOD08_E3", "MCD15A2H"]
         regex_list = [r'.*' + product + '.*\.hdf' for product in product_names]
         return regex_list
 
@@ -111,7 +111,7 @@ class MODIS_L3(AProduct):
             sd = SD(filename)
             for var_name, var_info in sd.datasets().items():
                 # Check that the dimensions are correct
-                if var_info[0] == ('YDim:mod08', 'XDim:mod08'):
+                if var_info[0] == ('YDim:mod08', 'XDim:mod08') or var_info[0] == ('YDim_MOD_Grid_MOD15A2H', 'XDim_MOD_Grid_MOD15A2H'):
                     variables.add(var_name)
 
         return variables
