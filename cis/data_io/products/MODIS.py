@@ -249,11 +249,7 @@ class MODIS_L3(AProduct):
                 # Check that the dimensions are correct
                 if var_info[0] == ('YDim:mod08', 'XDim:mod08') or var_info[0] == ('YDim_MOD_Grid_MOD15A2H', 'XDim_MOD_Grid_MOD15A2H'):
                     variables.add(var_name)
-                
-                # try reseting dim names if not working
-                if var_info[0] == ('YDim_MOD_Grid_MOD15A2H', 'XDim_MOD_Grid_MOD15A2H'):
-                    var_info[0] = ('YDim:mod08', 'XDim:mod08')
-                    variables.add(var_name)
+                 
                 
 
         return variables
@@ -267,7 +263,7 @@ class MODIS_L3(AProduct):
         from cis.data_io.hdf_sd import get_metadata
         from cf_units import Unit
 
-        variables = ['XDim', 'YDim', variable]
+        variables = ['XDim_MOD_Grid_MOD15A2H', 'YDim_MOD_Grid_MOD15A2H', variable]
         logging.info("Listing coordinates: " + str(variables))
 
         cube_list = CubeList()
@@ -275,8 +271,8 @@ class MODIS_L3(AProduct):
         for f in filenames:
             sdata, vdata = _read_hdf4(f, variables)
 
-            lat_coord = DimCoord(_get_MODIS_SDS_data(sdata['YDim']), standard_name='latitude', units='degrees')
-            lon_coord = DimCoord(_get_MODIS_SDS_data(sdata['XDim']), standard_name='longitude', units='degrees')
+            lat_coord = DimCoord(_get_MODIS_SDS_data(sdata['YDim_MOD_Grid_MOD15A2H']), standard_name='latitude', units='degrees')
+            lon_coord = DimCoord(_get_MODIS_SDS_data(sdata['XDim_MOD_Grid_MOD15A2H']), standard_name='longitude', units='degrees')
 
             # create time coordinate using the midpoint of the time delta between the start date and the end date
             start_datetime = self._get_start_date(f)
