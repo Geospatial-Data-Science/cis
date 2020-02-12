@@ -249,6 +249,12 @@ class MODIS_L3(AProduct):
                 # Check that the dimensions are correct
                 if var_info[0] == ('YDim:mod08', 'XDim:mod08') or var_info[0] == ('YDim_MOD_Grid_MOD15A2H', 'XDim_MOD_Grid_MOD15A2H'):
                     variables.add(var_name)
+                
+                # try reseting dim names if not working
+                if var_info[0] == ('YDim_MOD_Grid_MOD15A2H', 'XDim_MOD_Grid_MOD15A2H'):
+                    var_info[0] = ('YDim:mod08', 'XDim:mod08')
+                    variables.add(var_name)
+                
 
         return variables
 
